@@ -1,0 +1,31 @@
+<form (ngSubmit)="save()" #form="ngForm">
+
+  <abp-modal-header
+    [title]="'EditCountry' | localize"
+    (onCloseClick)="bsModalRef.hide()">
+  </abp-modal-header>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control"
+             name="name"
+             [(ngModel)]="country.name"
+             required />
+    </div>
+
+    <div class="form-check">
+      <input type="checkbox"
+             class="form-check-input"
+             [(ngModel)]="country.isActive"
+             name="isActive" />
+      <label class="form-check-label">Is Active</label>
+    </div>
+  </div>
+
+  <abp-modal-footer
+    [saveDisabled]="!form.valid"
+    (onCancelClick)="bsModalRef.hide()">
+  </abp-modal-footer>
+
+</form>

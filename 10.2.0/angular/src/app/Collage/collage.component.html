@@ -1,0 +1,66 @@
+<div [@routerTransition]>
+  <!-- Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-6">
+          <h1>{{ 'Colleges' | localize }}</h1>
+        </div>
+
+        <div class="col-6 text-right">
+          <button class="btn btn-primary" (click)="createCollage()">
+            <i class="fa fa-plus mr-1"></i>
+            {{ 'CreateCollege' | localize }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="content">
+    <div class="card">
+
+      <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>{{ 'CollegeName' | localize }}</th>
+              <th>{{ 'Address' | localize }}</th>
+              <th>{{ 'PhoneNumber' | localize }}</th>
+              <th style="width: 150px">{{ 'Actions' | localize }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let collage of collages">
+              <td>{{ collage.name }}</td>
+              <td>{{ collage.address }}</td>
+              <td>{{ collage.phoneNumber }}</td>
+              <td>
+                <button
+                  class="btn btn-sm btn-secondary mr-1"
+                  (click)="editCollage(collage)">
+                  <i class="fa fa-edit"></i>
+                </button>
+
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="delete(collage)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="collages.length === 0">
+              <td colspan="4" class="text-center">
+                {{ 'NoData' | localize }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+</div>

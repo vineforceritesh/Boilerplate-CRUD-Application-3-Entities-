@@ -1,0 +1,30 @@
+<p>countries works!</p>
+<div class="card">
+  <div class="card-header">
+    <button class="btn btn-primary" (click)="create()">
+      + Create Country
+    </button>
+  </div>
+
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Active</th>
+          <th width="150">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of countries">
+          <td>{{ c.name }}</td>
+          <td>{{ c.isActive }}</td>
+          <td>
+            <button class="btn btn-sm btn-info" (click)="edit(c)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="delete(c)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

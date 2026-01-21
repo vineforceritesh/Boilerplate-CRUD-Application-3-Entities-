@@ -1,0 +1,101 @@
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #employeeForm="ngForm"
+  (ngSubmit)="save()">
+
+  <!-- Modal Header -->
+  <abp-modal-header
+    [title]="'Create Collage  info' | localize"
+    (onCloseClick)="bsModalRef.hide()">
+  </abp-modal-header>
+
+  <div class="modal-body">
+
+    <!-- Name -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="name">
+        {{ 'Name' | localize }}
+      </label>
+
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          id="name"
+          required
+          minlength="2"
+          maxlength="50"
+          [(ngModel)]="collage.name"
+          #nameModel="ngModel"
+          #nameEl />
+
+        <abp-validation-summary
+          [control]="nameModel"
+          [controlEl]="nameEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="address">
+        {{ 'Address' | localize }}
+      </label>
+
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          name="address"
+          id="address"
+          required
+          [(ngModel)]="collage.address"
+          #emailModel="ngModel"
+          #emailEl />
+
+        <abp-validation-summary
+          [control]="emailModel"
+          [controlEl]="emailEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+    <!-- Position -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="PhoneNumber">
+        {{ 'PhoneNumber' | localize }}
+      </label>
+
+      <div class="col-md-9">
+        <input
+          type="number"
+          class="form-control"
+          name="PhoneNumber"
+          id="PhoneNumber"
+          required
+          [(ngModel)]="collage.phoneNumber"
+          #positionModel="ngModel"
+          #positionEl />
+
+        <abp-validation-summary
+          [control]="positionModel"
+          [controlEl]="positionEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+   
+    
+
+  </div>
+
+  <!-- Modal Footer -->
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!employeeForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()">
+  </abp-modal-footer>
+
+</form>

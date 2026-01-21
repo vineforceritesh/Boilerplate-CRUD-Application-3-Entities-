@@ -1,0 +1,119 @@
+<form
+  class="form-horizontal"
+  autocomplete="off"
+  #createStudentForm="ngForm"
+  (ngSubmit)="save()">
+
+  <!-- Modal Header -->
+  <abp-modal-header
+    [title]="'CreateStudent' | localize"
+    (onCloseClick)="bsModalRef.hide()">
+  </abp-modal-header>
+
+  <div class="modal-body">
+
+    <!-- Name -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="name">
+        {{ 'Name' | localize }}
+      </label>
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          id="name"
+          required
+          minlength="2"
+          maxlength="50"
+          [(ngModel)]="student.name"
+          #nameModel="ngModel"
+          #nameEl />
+
+        <abp-validation-summary
+          [control]="nameModel"
+          [controlEl]="nameEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="email">
+        {{ 'Email' | localize }}
+      </label>
+      <div class="col-md-9">
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          id="email"
+          required
+          [(ngModel)]="student.email"
+          #emailModel="ngModel"
+          #emailEl />
+
+        <abp-validation-summary
+          [control]="emailModel"
+          [controlEl]="emailEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+    <!-- Age -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="age">
+        {{ 'Age' | localize }}
+      </label>
+      <div class="col-md-9">
+        <input
+          type="number"
+          class="form-control"
+          name="age"
+          id="age"
+          required
+          min="1"
+          max="120"
+          [(ngModel)]="student.age"
+          #ageModel="ngModel"
+          #ageEl />
+
+        <abp-validation-summary
+          [control]="ageModel"
+          [controlEl]="ageEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+    <!-- ✅ College Dropdown -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="collegeId">
+        {{ 'College' | localize }}
+      </label>
+      <div class="col-md-9">
+        <select class="form-control" name="collegeId" id="collegeId" required [(ngModel)]="student.collegeId"
+          #collegeModel="ngModel" #collegeEl>
+    
+          <option value="">-- Select College --</option>
+    
+          <option *ngFor="let c of collegeList" [value]="c.value">
+            {{ c.name }}
+          </option>
+        </select>
+    
+    
+        <abp-validation-summary [control]="collegeModel" [controlEl]="collegeEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal Footer -->
+  <abp-modal-footer
+    [cancelDisabled]="saving"
+    [saveDisabled]="!createStudentForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()">
+  </abp-modal-footer>
+
+</form>
