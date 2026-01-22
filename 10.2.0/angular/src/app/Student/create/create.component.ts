@@ -21,7 +21,10 @@ import {
   StudentDto,
   StudentServiceProxy,
   NameValueDto,
-  CollageServiceProxy
+  CollageServiceProxy,
+  CountryDto,
+  StateDto,
+  CityDto
 } from '../../../shared/service-proxies/service-proxies';
 import { CommonModule } from '@angular/common';
 
@@ -47,9 +50,15 @@ export class CreateStudentDialogComponent
   student: StudentDto = new StudentDto();
 
   // ✅ dropdown data
-  collegeList: NameValueDto[] = [];
+  collageList: NameValueDto[] = [];
+  countryList: NameValueDto[] = [];
+stateList: NameValueDto[] = [];
+cityList: NameValueDto[] = [];
 
   onSave = output<EventEmitter<any>>();
+countries: any;
+states: any;
+cities: any;
 
   constructor(
     injector: Injector,
@@ -61,22 +70,69 @@ export class CreateStudentDialogComponent
     super(injector);
   }
 
-  ngOnInit(): void {
+ ngOnInit(): void {
     this.loadColleges();
+    this.loadCountries();
   }
 
-  // ✅ Load college dropdown
-loadColleges(): void {
  
-  this._collageService.getCollegeLookup()
-    .subscribe(result => {
-      this.collegeList = result;
-      this.cd.detectChanges();
-      console.log('Loaded colleges:', this.collegeList);
-    });
-}
+  // ---------- College ----------
+  loadColleges(): void {
+    this._collageService.getCollegeLookup()
+      .subscribe(result => {
+        this.collageList = result;
+        this.cd.detectChanges();
+        console.log('Loaded colleges:', this.collageList);
+      });
+  }
 
+  // ---------- Country ----------
+  loadCountries(): void {
+    this._studentService.getCountryLookup()
+      .subscribe(result => {
+        this.countryList = result;
+        this.cd.detectChanges();
+        console.log('Loaded countries:', this.countryList);
+      });
+  }
 
+  // ---------- Country Change → Load States ----------
+  onCountryChange(countryId: number): void {
+    this.student.stateId = null!;
+    this.student.cityId = null!;
+    this.stateList = [];
+    this.cityList = [];
+
+    if (!countryId) {
+      return;
+    }
+
+    this._studentService.getStateLookup(countryId)
+      .subscribe(result => {
+        this.stateList = result;
+        this.cd.detectChanges();
+        console.log('Loaded states by country:', this.stateList);
+      });
+  }
+
+  // ---------- State Change → Load Cities ----------
+  onStateChange(stateId: number): void {
+    this.student.cityId = null!;
+    this.cityList = [];
+
+    if (!stateId) {
+      return;
+    }
+
+    this._studentService.getCityLookup(stateId)
+      .subscribe(result => {
+        this.cityList = result;
+        this.cd.detectChanges();
+        console.log('Loaded cities by state:', this.cityList);
+      });
+  }
+
+  // ---------- Save ----------
   save(): void {
     this.saving = true;
 
@@ -86,8 +142,8 @@ loadColleges(): void {
     this._studentService.create(input).subscribe(
       () => {
         this.notify.info(this.l('SavedSuccessfully'));
-        this.bsModalRef.hide();
-        this.onSave.emit(null);
+        this.onSave.emit(null);   // emit first
+        this.bsModalRef.hide();   // then close
       },
       () => {
         this.saving = false;

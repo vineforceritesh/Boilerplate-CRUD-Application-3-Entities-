@@ -4,6 +4,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,14 +77,14 @@ namespace UserCrud.Student
                 .Include(x => x.City)
                 .ToListAsync();
 
-            return students.Select(x => new StudentDto
+            return students.Select(x => new StudentDto     
             {
                 Id = x.Id,
                 Name = x.Name,
                 Email = x.Email,
                 Age = x.Age,
                 CollageId = x.CollageId,
-                CollegeName = x.Collage?.Name,
+                CollageName = x.Collage?.Name,
                 CountryId = x.CountryId,
                 CountryName = x.Country?.Name,
                 StateId = x.StateId,
@@ -123,7 +124,7 @@ namespace UserCrud.Student
 
        
         private async Task ValidateLocationAsync(int countryId, int stateId, int cityId)
-        {
+        {    
             if (await _countryRepository.FirstOrDefaultAsync(countryId) == null)
                 throw new UserFriendlyException("Invalid Country");
 
@@ -134,6 +135,11 @@ namespace UserCrud.Student
             var city = await _cityRepository.FirstOrDefaultAsync(cityId);
             if (city == null || city.StateId != stateId)
                 throw new UserFriendlyException("Invalid City");
+
+
+            
         }
+
+        
     }
 }

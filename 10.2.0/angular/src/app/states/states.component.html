@@ -1,0 +1,57 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h3 class="card-title">States</h3>
+    <button class="btn btn-primary" (click)="create()">
+      + Create State
+    </button>
+  </div>
+
+  <div class="card-body">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>State Name</th>
+          <th>Country Id</th>
+          <th>Status</th>
+          <th width="160">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let state of states">
+          <td>{{ state.name }}</td>
+          <td>{{ state.countryId }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="state.isActive ? 'badge-success' : 'badge-danger'"
+            >
+              {{ state.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td>
+            <button
+              class="btn btn-sm btn-info mr-2"
+              (click)="edit(state)"
+            >
+              Edit
+            </button>
+
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="delete(state)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="states.length === 0">
+          <td colspan="4" class="text-center">
+            No states found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

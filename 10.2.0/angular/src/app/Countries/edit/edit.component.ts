@@ -17,6 +17,7 @@ export class EditCountryComponent  implements OnInit {
   id!: number;
   country = new UpdateCountryDto();
   onSave = output<EventEmitter<any>>();
+  notify: any;
 
   constructor(
     injector: Injector,
@@ -27,16 +28,19 @@ export class EditCountryComponent  implements OnInit {
   }
 
   ngOnInit(): void {
-    // this._countryService.get(this.id).subscribe(res => {
-    //   this.country.init(res);
-    // });
+    this._countryService.getAll().subscribe(res => {
+      this.country.init(res);
+    });
   }
 
    save(): void {
-  //   this._countryService.update(this.country).subscribe(() => {
-  //     this.notify.success(this.l('SavedSuccessfully'));
-  //     this.bsModalRef.hide();
-  //     this.onSave.emit(null);
-  //   });
+    this._countryService.update(this.country).subscribe(() => {
+      this.notify.success(this.l('SavedSuccessfully'));
+      this.bsModalRef.hide();
+      this.onSave.emit(null);
+    });
+  }
+  l(arg0: string): any {
+    throw new Error('Method not implemented.');
   }
 }

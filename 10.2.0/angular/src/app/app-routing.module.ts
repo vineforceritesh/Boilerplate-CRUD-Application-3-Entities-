@@ -42,6 +42,16 @@ import { AppComponent } from './app.component';
                         loadComponent: () => import('./Countries/countries.component').then((m) => m.CountryComponent),
                         canActivate: [AppRouteGuard],
                     },
+                    {
+                        path: 'States',
+                        loadComponent: () => import('./states/states.component').then((m) => m.StatesComponent),
+                        canActivate: [AppRouteGuard],
+                    },
+                     {
+                        path: 'cities',
+                        loadComponent: () => import('./cities/cities.component').then((m) => m.CitiesComponent),
+                        canActivate: [AppRouteGuard],
+                    },
                      
                     {
                         path: 'collage',

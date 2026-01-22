@@ -11,5 +11,7 @@ namespace UserCrud.States.Dto
         public string Name { get; set; }
         
         public int CountryId { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

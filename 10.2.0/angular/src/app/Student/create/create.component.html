@@ -84,19 +84,90 @@
         </abp-validation-summary>
       </div>
     </div>
+<!-- Country -->
+<div class="form-group row required">
+  <label class="col-md-3 col-form-label" for="countryId">
+    {{ 'Country' | localize }}
+  </label>
+  <div class="col-md-9">
+    <select class="form-control" name="countryId" id="countryId" required
+      [(ngModel)]="student.countryId"
+      (change)="onCountryChange(student.countryId)"
+      #countryModel="ngModel" #countryEl>
 
-    <!-- ✅ College Dropdown -->
+      <option value="">-- Select Country --</option>
+
+      <option *ngFor="let c of countryList" [value]="c.value">
+        {{ c.name }}
+      </option>
+    </select>
+
+    <abp-validation-summary [control]="countryModel" [controlEl]="countryEl"></abp-validation-summary>
+  </div>
+</div>
+
+
+<!-- State -->
+<div class="form-group row required">
+  <label class="col-md-3 col-form-label" for="stateId">
+    {{ 'State' | localize }}
+  </label>
+  <div class="col-md-9">
+    <select class="form-control" name="stateId" id="stateId" required
+      [(ngModel)]="student.stateId"
+      (change)="onStateChange(student.stateId)"
+      #stateModel="ngModel" #stateEl>
+
+      <option value="">-- Select State --</option>
+
+      <option *ngFor="let s of stateList" [value]="s.value">
+        {{ s.name }}
+      </option>
+    </select>
+
+    <abp-validation-summary [control]="stateModel" [controlEl]="stateEl"></abp-validation-summary>
+  </div>
+</div>
+
+<!-- City -->
+<div class="form-group row required">
+  <label class="col-md-3 col-form-label" for="cityId">
+    {{ 'City' | localize }}
+  </label>
+  <div class="col-md-9">
+    <select class="form-control" name="cityId" id="cityId" required
+      [(ngModel)]="student.cityId"
+      #cityModel="ngModel" #cityEl>
+
+      <option value="">-- Select City --</option>
+
+      <option *ngFor="let c of cityList" [value]="c.value">
+        {{ c.name }}
+      </option>
+    </select>
+
+    <abp-validation-summary [control]="cityModel" [controlEl]="cityEl"></abp-validation-summary>
+  </div>
+</div>
+
+
+
+
+
+
+
+    <!-- College -->
     <div class="form-group row required">
       <label class="col-md-3 col-form-label" for="collegeId">
         {{ 'College' | localize }}
       </label>
       <div class="col-md-9">
-        <select class="form-control" name="collegeId" id="collegeId" required [(ngModel)]="student.collegeId"
+        <select class="form-control" name="collegeId" id="collegeId" required [(ngModel)]="student.collageId"
           #collegeModel="ngModel" #collegeEl>
     
           <option value="">-- Select College --</option>
     
-          <option *ngFor="let c of collegeList" [value]="c.value">
+          <option *ngFor="let c of collageList" [value]="c.value">
             {{ c.name }}
           </option>
         </select>
@@ -105,7 +176,9 @@
         <abp-validation-summary [control]="collegeModel" [controlEl]="collegeEl">
         </abp-validation-summary>
       </div>
-    </div>
+    </div> 
+
+    
 
   </div>
 

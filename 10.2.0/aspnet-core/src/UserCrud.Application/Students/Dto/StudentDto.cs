@@ -8,7 +8,7 @@
         public int Age { get; set; }
 
         public int CollageId { get; set; }
-        public string CollegeName { get; set; }
+        public string CollageName { get; set; }
 
         public int CountryId { get; set; }
         public string CountryName { get; set; }

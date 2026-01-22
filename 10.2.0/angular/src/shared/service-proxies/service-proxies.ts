@@ -153,6 +153,64 @@ export class CityServiceProxy {
     }
 
     /**
+     * @return OK
+     */
+    getCityLookup(): Observable<NameValueDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/City/GetCityLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCityLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCityLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NameValueDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NameValueDto[]>;
+        }));
+    }
+
+    protected processGetCityLookup(response: HttpResponseBase): Observable<NameValueDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(NameValueDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return OK
      */
@@ -733,9 +791,6 @@ export class ConfigurationServiceProxy {
 
 @Injectable()
 export class CountryServiceProxy {
-    getAllAsync() {
-      throw new Error('Method not implemented.');
-    }
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -1849,6 +1904,190 @@ export class StudentServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @return OK
+     */
+    getCountryLookup(): Observable<NameValueDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Student/GetCountryLookup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCountryLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCountryLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NameValueDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NameValueDto[]>;
+        }));
+    }
+
+    protected processGetCountryLookup(response: HttpResponseBase): Observable<NameValueDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(NameValueDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param countryId (optional) 
+     * @return OK
+     */
+    getStateLookup(countryId: number | undefined): Observable<NameValueDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Student/GetStateLookup?";
+        if (countryId === null)
+            throw new Error("The parameter 'countryId' cannot be null.");
+        else if (countryId !== undefined)
+            url_ += "countryId=" + encodeURIComponent("" + countryId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetStateLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetStateLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NameValueDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NameValueDto[]>;
+        }));
+    }
+
+    protected processGetStateLookup(response: HttpResponseBase): Observable<NameValueDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(NameValueDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param stateId (optional) 
+     * @return OK
+     */
+    getCityLookup(stateId: number | undefined): Observable<NameValueDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Student/GetCityLookup?";
+        if (stateId === null)
+            throw new Error("The parameter 'stateId' cannot be null.");
+        else if (stateId !== undefined)
+            url_ += "stateId=" + encodeURIComponent("" + stateId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetCityLookup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetCityLookup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<NameValueDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<NameValueDto[]>;
+        }));
+    }
+
+    protected processGetCityLookup(response: HttpResponseBase): Observable<NameValueDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(NameValueDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
     }
 
     /**
@@ -3820,6 +4059,7 @@ export interface ICreateRoleDto {
 export class CreateStateDto implements ICreateStateDto {
     name: string | undefined;
     countryId: number;
+    isActive: boolean;
 
     constructor(data?: ICreateStateDto) {
         if (data) {
@@ -3834,6 +4074,7 @@ export class CreateStateDto implements ICreateStateDto {
         if (_data) {
             this.name = _data["name"];
             this.countryId = _data["countryId"];
+            this.isActive = _data["isActive"];
         }
     }
 
@@ -3848,6 +4089,7 @@ export class CreateStateDto implements ICreateStateDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["countryId"] = this.countryId;
+        data["isActive"] = this.isActive;
         return data;
     }
 
@@ -3862,13 +4104,17 @@ export class CreateStateDto implements ICreateStateDto {
 export interface ICreateStateDto {
     name: string | undefined;
     countryId: number;
+    isActive: boolean;
 }
 
 export class CreateStudentDto implements ICreateStudentDto {
     name: string;
     email: string | undefined;
     age: number;
-    collegeId: number;
+    collageId: number;
+    countryId: number;
+    stateId: number;
+    cityId: number;
 
     constructor(data?: ICreateStudentDto) {
         if (data) {
@@ -3884,7 +4130,10 @@ export class CreateStudentDto implements ICreateStudentDto {
             this.name = _data["name"];
             this.email = _data["email"];
             this.age = _data["age"];
-            this.collegeId = _data["collegeId"];
+            this.collageId = _data["collageId"];
+            this.countryId = _data["countryId"];
+            this.stateId = _data["stateId"];
+            this.cityId = _data["cityId"];
         }
     }
 
@@ -3900,7 +4149,10 @@ export class CreateStudentDto implements ICreateStudentDto {
         data["name"] = this.name;
         data["email"] = this.email;
         data["age"] = this.age;
-        data["collegeId"] = this.collegeId;
+        data["collageId"] = this.collageId;
+        data["countryId"] = this.countryId;
+        data["stateId"] = this.stateId;
+        data["cityId"] = this.cityId;
         return data;
     }
 
@@ -3916,7 +4168,10 @@ export interface ICreateStudentDto {
     name: string;
     email: string | undefined;
     age: number;
-    collegeId: number;
+    collageId: number;
+    countryId: number;
+    stateId: number;
+    cityId: number;
 }
 
 export class CreateTenantDto implements ICreateTenantDto {
@@ -5071,8 +5326,14 @@ export class StudentDto implements IStudentDto {
     name: string | undefined;
     email: string | undefined;
     age: number;
-    collegeId: number;
-    collegeName: string | undefined;
+    collageId: number;
+    collageName: string | undefined;
+    countryId: number;
+    countryName: string | undefined;
+    stateId: number;
+    stateName: string | undefined;
+    cityId: number;
+    cityName: string | undefined;
 
     constructor(data?: IStudentDto) {
         if (data) {
@@ -5089,8 +5350,14 @@ export class StudentDto implements IStudentDto {
             this.name = _data["name"];
             this.email = _data["email"];
             this.age = _data["age"];
-            this.collegeId = _data["collegeId"];
-            this.collegeName = _data["collegeName"];
+            this.collageId = _data["collageId"];
+            this.collageName = _data["collageName"];
+            this.countryId = _data["countryId"];
+            this.countryName = _data["countryName"];
+            this.stateId = _data["stateId"];
+            this.stateName = _data["stateName"];
+            this.cityId = _data["cityId"];
+            this.cityName = _data["cityName"];
         }
     }
 
@@ -5107,8 +5374,14 @@ export class StudentDto implements IStudentDto {
         data["name"] = this.name;
         data["email"] = this.email;
         data["age"] = this.age;
-        data["collegeId"] = this.collegeId;
-        data["collegeName"] = this.collegeName;
+        data["collageId"] = this.collageId;
+        data["collageName"] = this.collageName;
+        data["countryId"] = this.countryId;
+        data["countryName"] = this.countryName;
+        data["stateId"] = this.stateId;
+        data["stateName"] = this.stateName;
+        data["cityId"] = this.cityId;
+        data["cityName"] = this.cityName;
         return data;
     }
 
@@ -5125,8 +5398,14 @@ export interface IStudentDto {
     name: string | undefined;
     email: string | undefined;
     age: number;
-    collegeId: number;
-    collegeName: string | undefined;
+    collageId: number;
+    collageName: string | undefined;
+    countryId: number;
+    countryName: string | undefined;
+    stateId: number;
+    stateName: string | undefined;
+    cityId: number;
+    cityName: string | undefined;
 }
 
 export enum TenantAvailabilityState {
@@ -5464,6 +5743,7 @@ export interface IUpdateCountryDto {
 export class UpdateStateDto implements IUpdateStateDto {
     id: number;
     name: string | undefined;
+    isActive: boolean;
     countryId: number;
 
     constructor(data?: IUpdateStateDto) {
@@ -5479,6 +5759,7 @@ export class UpdateStateDto implements IUpdateStateDto {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
+            this.isActive = _data["isActive"];
             this.countryId = _data["countryId"];
         }
     }
@@ -5494,6 +5775,7 @@ export class UpdateStateDto implements IUpdateStateDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
+        data["isActive"] = this.isActive;
         data["countryId"] = this.countryId;
         return data;
     }
@@ -5509,6 +5791,7 @@ export class UpdateStateDto implements IUpdateStateDto {
 export interface IUpdateStateDto {
     id: number;
     name: string | undefined;
+    isActive: boolean;
     countryId: number;
 }
 
@@ -5518,6 +5801,9 @@ export class UpdateStudentDto implements IUpdateStudentDto {
     email: string | undefined;
     age: number;
     collegeId: number;
+    countryId: number;
+    stateId: number;
+    cityId: number;
 
     constructor(data?: IUpdateStudentDto) {
         if (data) {
@@ -5535,6 +5821,9 @@ export class UpdateStudentDto implements IUpdateStudentDto {
             this.email = _data["email"];
             this.age = _data["age"];
             this.collegeId = _data["collegeId"];
+            this.countryId = _data["countryId"];
+            this.stateId = _data["stateId"];
+            this.cityId = _data["cityId"];
         }
     }
 
@@ -5552,6 +5841,9 @@ export class UpdateStudentDto implements IUpdateStudentDto {
         data["email"] = this.email;
         data["age"] = this.age;
         data["collegeId"] = this.collegeId;
+        data["countryId"] = this.countryId;
+        data["stateId"] = this.stateId;
+        data["cityId"] = this.cityId;
         return data;
     }
 
@@ -5569,6 +5861,9 @@ export interface IUpdateStudentDto {
     email: string | undefined;
     age: number;
     collegeId: number;
+    countryId: number;
+    stateId: number;
+    cityId: number;
 }
 
 export class UserDto implements IUserDto {

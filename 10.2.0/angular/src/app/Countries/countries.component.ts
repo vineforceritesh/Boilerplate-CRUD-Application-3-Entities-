@@ -33,7 +33,7 @@ ngOnInit(): void {
 }
 
  getCountries(): void {
-  this._countryService.getAllAsync().subscribe(res => {
+  this._countryService.getAll().subscribe(res => {
     this.countries = res.items;
   });
 }
