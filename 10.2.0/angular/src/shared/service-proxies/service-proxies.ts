@@ -4109,6 +4109,7 @@ export interface ICreateStateDto {
 
 export class CreateStudentDto implements ICreateStudentDto {
     name: string;
+    surname: string | undefined;
     email: string | undefined;
     age: number;
     collageId: number;
@@ -4128,6 +4129,7 @@ export class CreateStudentDto implements ICreateStudentDto {
     init(_data?: any) {
         if (_data) {
             this.name = _data["name"];
+            this.surname = _data["surname"];
             this.email = _data["email"];
             this.age = _data["age"];
             this.collageId = _data["collageId"];
@@ -4147,6 +4149,7 @@ export class CreateStudentDto implements ICreateStudentDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
+        data["surname"] = this.surname;
         data["email"] = this.email;
         data["age"] = this.age;
         data["collageId"] = this.collageId;
@@ -4166,6 +4169,7 @@ export class CreateStudentDto implements ICreateStudentDto {
 
 export interface ICreateStudentDto {
     name: string;
+    surname: string | undefined;
     email: string | undefined;
     age: number;
     collageId: number;
@@ -5324,6 +5328,7 @@ export interface IStateDto {
 export class StudentDto implements IStudentDto {
     id: number;
     name: string | undefined;
+    surname: string | undefined;
     email: string | undefined;
     age: number;
     collageId: number;
@@ -5348,6 +5353,7 @@ export class StudentDto implements IStudentDto {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
+            this.surname = _data["surname"];
             this.email = _data["email"];
             this.age = _data["age"];
             this.collageId = _data["collageId"];
@@ -5372,6 +5378,7 @@ export class StudentDto implements IStudentDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
+        data["surname"] = this.surname;
         data["email"] = this.email;
         data["age"] = this.age;
         data["collageId"] = this.collageId;
@@ -5396,6 +5403,7 @@ export class StudentDto implements IStudentDto {
 export interface IStudentDto {
     id: number;
     name: string | undefined;
+    surname: string | undefined;
     email: string | undefined;
     age: number;
     collageId: number;
@@ -5798,6 +5806,7 @@ export interface IUpdateStateDto {
 export class UpdateStudentDto implements IUpdateStudentDto {
     id: number;
     name: string;
+    surname: string | undefined;
     email: string | undefined;
     age: number;
     collegeId: number;
@@ -5818,6 +5827,7 @@ export class UpdateStudentDto implements IUpdateStudentDto {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
+            this.surname = _data["surname"];
             this.email = _data["email"];
             this.age = _data["age"];
             this.collegeId = _data["collegeId"];
@@ -5838,6 +5848,7 @@ export class UpdateStudentDto implements IUpdateStudentDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
+        data["surname"] = this.surname;
         data["email"] = this.email;
         data["age"] = this.age;
         data["collegeId"] = this.collegeId;
@@ -5858,6 +5869,7 @@ export class UpdateStudentDto implements IUpdateStudentDto {
 export interface IUpdateStudentDto {
     id: number;
     name: string;
+    surname: string | undefined;
     email: string | undefined;
     age: number;
     collegeId: number;

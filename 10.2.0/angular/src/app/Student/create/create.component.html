@@ -1,3 +1,12 @@
+
+<div *ngIf="errorMessage" class="alert-box error">
+  {{ message }}
+</div>
+
+<div *ngIf="successMessage" class="alert-box success">
+  {{ successMessage }}
+</div>
+
 <form
   class="form-horizontal"
   autocomplete="off"
@@ -27,6 +36,31 @@
           minlength="2"
           maxlength="50"
           [(ngModel)]="student.name"
+          #nameModel="ngModel"
+          #nameEl />
+
+        <abp-validation-summary
+          [control]="nameModel"
+          [controlEl]="nameEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+
+    <!-- surname -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="surname">
+        {{ 'surname' | localize }}
+      </label>
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          name="surname"
+          id="surname"
+          required
+          minlength="2"
+          maxlength="50"
+          [(ngModel)]="student.surname"
           #nameModel="ngModel"
           #nameEl />
 

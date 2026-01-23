@@ -44,6 +44,17 @@ export class CreateStudentDialogComponent
   extends AppComponentBase
   implements OnInit {
 
+successMessage: string = '';
+errorMessage: string = '';
+
+
+
+
+
+  
+
+
+
   saving = false;
 
   // form model
@@ -132,23 +143,36 @@ cities: any;
       });
   }
 
+
   // ---------- Save ----------
   save(): void {
-    this.saving = true;
+  this.saving = true;
 
-    const input = new CreateStudentDto();
-    input.init(this.student);
+  const input = new CreateStudentDto();
+  input.init(this.student);
 
-    this._studentService.create(input).subscribe(
-      () => {
-        this.notify.info(this.l('SavedSuccessfully'));
-        this.onSave.emit(null);   // emit first
-        this.bsModalRef.hide();   // then close
-      },
-      () => {
-        this.saving = false;
-        this.cd.detectChanges();
-      }
-    );
+  this._studentService.create(input).subscribe({
+    next: () => {
+  this.successMessage = "Student created successfully ✅";
+  this.errorMessage = "";   
+
+  this.notify.info(this.l('SavedSuccessfully'));
+  this.onSave.emit(null);
+
+  setTimeout(() => {
+    this.bsModalRef.hide();
+  }, 1200);
+},
+error: (err) => {
+  this.saving = false;
+
+  this.errorMessage = err.error?.error?.message || "Email already exists ❌";
+  this.successMessage = "";  
+
+  this.cd.detectChanges();
+}
+
+}
+  );
   }
 }

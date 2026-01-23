@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Threading.Tasks;
 using UserCrud.Cities;
 using UserCrud.Collages;
@@ -81,6 +82,7 @@ namespace UserCrud.Student
             {
                 Id = x.Id,
                 Name = x.Name,
+                Surname = x.Surname,
                 Email = x.Email,
                 Age = x.Age,
                 CollageId = x.CollageId,
@@ -96,31 +98,57 @@ namespace UserCrud.Student
 
         public async Task<StudentDto> CreateAsync(CreateStudentDto input)
         {
-            await ValidateLocationAsync(input.CountryId, input.StateId, input.CityId);
-
-            var student = ObjectMapper.Map<Students.Student>(input);
-            await _studentRepository.InsertAsync(student);
-            await CurrentUnitOfWork.SaveChangesAsync();
-
-            return ObjectMapper.Map<StudentDto>(student);
+           try
+            {
+                await ValidateLocationAsync(input.CountryId, input.StateId, input.CityId);
+                var emailExists = await _studentRepository.GetAll()
+                   .AnyAsync(x => x.Email == input.Email);
+                if (emailExists)
+                {
+                    throw new UserFriendlyException("Email already exists ");
+                }
+                var student = ObjectMapper.Map<Students.Student>(input);
+                await _studentRepository.InsertAsync(student);
+                await CurrentUnitOfWork.SaveChangesAsync();
+                return ObjectMapper.Map<StudentDto>(student);
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException("Student not created ");
+            }
         }
-
         public async Task<StudentDto> UpdateAsync(UpdateStudentDto input)
         {
-            var student = await _studentRepository.GetAsync(input.Id);
+            try
+            {
+                var student = await _studentRepository.GetAsync(input.Id);
 
-            await ValidateLocationAsync(input.CountryId, input.StateId, input.CityId);
+                await ValidateLocationAsync(input.CountryId, input.StateId, input.CityId);
 
-            ObjectMapper.Map(input, student);
-            await _studentRepository.UpdateAsync(student);
+                ObjectMapper.Map(input, student);
+                await _studentRepository.UpdateAsync(student);
 
-            return ObjectMapper.Map<StudentDto>(student);
+                return ObjectMapper.Map<StudentDto>(student);
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException("Student not updated");
+            }
         }
+
 
         public async Task DeleteAsync(EntityDto<int> input)
         {
-            await _studentRepository.DeleteAsync(input.Id);
+           try
+            {
+                await _studentRepository.DeleteAsync(input.Id);
+            }
+            catch (Exception ex)
+            {
+                throw new UserFriendlyException("Student not found.");
+            }
         }
+         
 
        
         private async Task ValidateLocationAsync(int countryId, int stateId, int cityId)
