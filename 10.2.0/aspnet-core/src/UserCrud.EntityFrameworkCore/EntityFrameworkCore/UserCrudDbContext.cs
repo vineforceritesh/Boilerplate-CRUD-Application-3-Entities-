@@ -8,6 +8,9 @@ using UserCrud.Countries;
 using UserCrud.MultiTenancy;
 using UserCrud.States;
 using UserCrud.Students;
+using UserCrud.Doctors;
+using UserCrud.Patients;
+
 
 namespace UserCrud.EntityFrameworkCore;
 
@@ -24,6 +27,26 @@ public class UserCrudDbContext : AbpZeroDbContext<Tenant, Role, User, UserCrudDb
     public DbSet<Country> Countries { get; set; }
     public DbSet<State> States { get; set; }
     public DbSet<City> Cities { get; set; }
+
+    public DbSet<Patient> Patients { get; set; }
+
+    public DbSet<Doctor> Doctors { get; set; }
+
+
+    public DbSet<UserCrud.Rooms.Rooms> Rooms { get; set; }
+
+
+    public DbSet<UserCrud.Beds.Bed> Beds { get; set; }
+
+    public DbSet<UserCrud.PatientAdmission.PatientAdmission> PatientAdmission { get; set; }
+
+
+
+
+
+
+
+
 
     }
 

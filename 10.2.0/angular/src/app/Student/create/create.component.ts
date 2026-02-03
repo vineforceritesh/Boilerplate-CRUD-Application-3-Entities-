@@ -4,8 +4,11 @@ import {
   OnInit,
   ChangeDetectorRef,
   output,
-  EventEmitter
+  EventEmitter,
+ 
 } from '@angular/core';
+
+
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 
@@ -28,24 +31,30 @@ import {
 } from '../../../shared/service-proxies/service-proxies';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   templateUrl: 'create.component.html',
   standalone: true,
   imports: [
-       CommonModule, 
+    CommonModule,
     FormsModule,
     AbpModalHeaderComponent,
     AbpValidationSummaryComponent,
     AbpModalFooterComponent,
     LocalizePipe,
-  ],
+    
+],
 })
 export class CreateStudentDialogComponent
   extends AppComponentBase
   implements OnInit {
+[x: string]: any;
 
 successMessage: string = '';
 errorMessage: string = '';
+
+
+
 
 
 
@@ -60,21 +69,24 @@ errorMessage: string = '';
   // form model
   student: StudentDto = new StudentDto();
 
-  // ✅ dropdown data
-  collageList: NameValueDto[] = [];
+  // dropdown data
+  
   countryList: NameValueDto[] = [];
 stateList: NameValueDto[] = [];
 cityList: NameValueDto[] = [];
+collageList: NameValueDto[] = [];
 
   onSave = output<EventEmitter<any>>();
 countries: any;
 states: any;
 cities: any;
+collages: any;
+
 
   constructor(
     injector: Injector,
     private _studentService: StudentServiceProxy,
-    private _collageService: CollageServiceProxy,
+    // private _collageService: CollageServiceProxy,
     public bsModalRef: BsModalRef,
     private cd: ChangeDetectorRef
   ) {
@@ -82,21 +94,12 @@ cities: any;
   }
 
  ngOnInit(): void {
-    this.loadColleges();
+   
     this.loadCountries();
   }
 
  
-  // ---------- College ----------
-  loadColleges(): void {
-    this._collageService.getCollegeLookup()
-      .subscribe(result => {
-        this.collageList = result;
-        this.cd.detectChanges();
-        console.log('Loaded colleges:', this.collageList);
-      });
-  }
-
+  
   // ---------- Country ----------
   loadCountries(): void {
     this._studentService.getCountryLookup()
@@ -142,10 +145,30 @@ cities: any;
         console.log('Loaded cities by state:', this.cityList);
       });
   }
+  // 
+
+  onCityChange(cityId: number) : void{
+    this.student.collageId = null!;
+    this.collageList = [];
+
+    if(!cityId){
+       return;
+    }
+      this._studentService.getCollageLookup(cityId).subscribe(result => {
+        this.collageList = result;
+        this.cd.detectChanges();
+        console.log('loded collage by city', this.collageList)
+      });
+    }
+  
+
+
+
+
 
 
   // ---------- Save ----------
-  save(): void {
+ save(): void {
   this.saving = true;
 
   const input = new CreateStudentDto();
@@ -153,26 +176,34 @@ cities: any;
 
   this._studentService.create(input).subscribe({
     next: () => {
-  this.successMessage = "Student created successfully ✅";
-  this.errorMessage = "";   
+      this.saving = false;
 
-  this.notify.info(this.l('SavedSuccessfully'));
-  this.onSave.emit(null);
+      // Success Popup
+              this.notify.success(
+             ` ${this.student.name} , created successfully ✅`,
+          'Success'
+        );
 
-  setTimeout(() => {
-    this.bsModalRef.hide();
-  }, 1200);
-},
-error: (err) => {
-  this.saving = false;
 
-  this.errorMessage = err.error?.error?.message || "Email already exists ❌";
-  this.successMessage = "";  
+      this.onSave.emit(null);
 
-  this.cd.detectChanges();
+      setTimeout(() => {
+        this.bsModalRef.hide();
+      }, 1200);
+    },
+
+    error: (err) => {
+      this.saving = false;
+
+      // Backend ka error message extract karna
+      const errorMsg =
+        err?.error?.error?.message || 'Email already exists ❌';   
+
+      //   Errro Popu
+      this.notify.error(errorMsg, 'Error');
+
+      this.cd.detectChanges();
+    }
+  });
 }
-
-}
-  );
-  }
 }

@@ -20,10 +20,39 @@
           class="form-control"
           name="name"
           id="name"
+          placeholder="Update Your Name--"
           required
           minlength="2"
           maxlength="50"
           [(ngModel)]="student.name"
+          #nameModel="ngModel"
+          #nameEl />
+
+        <abp-validation-summary
+          [control]="nameModel"
+          [controlEl]="nameEl">
+        </abp-validation-summary>
+      </div>
+    </div>
+    <!-- surname -->
+    <div class="form-group row required">
+      <label class="col-md-3 col-form-label" for="surname">
+        {{ 'surname' | localize }}
+      </label>
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          name="surname"
+          id="surname"
+          
+          
+
+          placeholder="Enter Your Surname--"
+          
+          minlength="2"
+          maxlength="50"
+          [(ngModel)]="student.surname"
           #nameModel="ngModel"
           #nameEl />
 
@@ -44,7 +73,8 @@
           class="form-control"
           name="email"
           id="email"
-          required
+          placeholder="Email not Update"
+          disabled="student.email"
           [(ngModel)]="student.email"
           #emailModel="ngModel"
           #emailEl />
@@ -69,6 +99,7 @@
           required
           min="1"
           max="120"
+          placeholder="Update Your Age--"
           [(ngModel)]="student.age"
           #ageModel="ngModel"
           #ageEl />
@@ -90,7 +121,9 @@
           type="text"
           class="form-control"
           name="college"
-          id="college"
+          id="college" 
+          disabled=""
+          placeholder="Collage Name Are not Update"
           [(ngModel)]="student.collageId" />
       </div>
     </div>

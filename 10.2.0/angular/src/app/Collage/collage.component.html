@@ -2,7 +2,7 @@
   <!-- Header -->
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row">
+      <div class="row align-items-center">
         <div class="col-6">
           <h1>{{ 'Colleges' | localize }}</h1>
         </div>
@@ -20,47 +20,63 @@
   <!-- Content -->
   <section class="content">
     <div class="card">
-
-      <div class="card-body table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead>
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover table-bordered text-nowrap mb-0">
+          <thead class="thead-light">
             <tr>
               <th>{{ 'CollegeName' | localize }}</th>
-              <th>{{ 'Address' | localize }}</th>
+              <th>{{ 'cityName' | localize }}</th>
               <th>{{ 'PhoneNumber' | localize }}</th>
-              <th style="width: 150px">{{ 'Actions' | localize }}</th>
+              <th class="text-center" style="width: 120px">
+                {{ 'Actions' | localize }}
+              </th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let collage of collages">
-              <td>{{ collage.name }}</td>
-              <td>{{ collage.address }}</td>
-              <td>{{ collage.phoneNumber }}</td>
               <td>
+                <strong>{{ collage.name }}</strong>
+
+              </td>
+
+              <td>
+                <span class="badge badge-info">
+                  {{ collage.id || '-' }}
+                </span>
+              </td>
+             
+
+              <td>
+                <i class="fa fa-phone mr-1 text-muted"></i>
+                {{ collage.phoneNumber || '-' }}
+              </td>
+
+              <td class="text-center">
                 <button
                   class="btn btn-sm btn-secondary mr-1"
-                  (click)="editCollage(collage)">
+                  (click)="editCollage(collage)"
+                  title="Edit">
                   <i class="fa fa-edit"></i>
                 </button>
 
                 <button
                   class="btn btn-sm btn-danger"
-                  (click)="delete(collage)">
+                  (click)="delete(collage)"
+                  title="Delete">
                   <i class="fa fa-trash"></i>
                 </button>
               </td>
             </tr>
 
             <tr *ngIf="collages.length === 0">
-              <td colspan="4" class="text-center">
+              <td colspan="4" class="text-center text-muted">
                 {{ 'NoData' | localize }}
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-
     </div>
   </section>
 </div>

@@ -16,6 +16,7 @@ using UserCrud.States;
 using UserCrud.Students;
 using UserCrud.Students.Dto;
 
+
 namespace UserCrud.Student
 {
     [AbpAuthorize]
@@ -48,7 +49,7 @@ namespace UserCrud.Student
         {
             return (await _countryRepository.GetAllListAsync())
                 .Select(x => new NameValueDto(x.Name, x.Id.ToString()))
-                .ToList();
+                .ToList(); 
         }
 
         public async Task<List<NameValueDto>> GetStateLookupAsync(int countryId)
@@ -65,9 +66,19 @@ namespace UserCrud.Student
                 .ToList();
         }
 
-        
+        public async Task<List<NameValueDto>> GetCollageLookupAsync(int cityId)
+        {
+            return (await _collegeRepository.GetAllListAsync(
+                x => x.CityId.HasValue && x.CityId.Value == cityId
+            ))
+            .Select(x => new NameValueDto(x.Name, x.Id.ToString()))
+            .ToList();
+        }
+
+
+
         // CRUD
-        
+
         public async Task<List<StudentDto>> GetAllAsync()
         {
             var students = await _studentRepository
@@ -100,7 +111,7 @@ namespace UserCrud.Student
         {
            try
             {
-                await ValidateLocationAsync(input.CountryId, input.StateId, input.CityId);
+                await ValidateLocationAsync(input.CountryId, input.StateId, input.CityId , input.CollageId);
                 var emailExists = await _studentRepository.GetAll()
                    .AnyAsync(x => x.Email == input.Email);
                 if (emailExists)
@@ -116,6 +127,9 @@ namespace UserCrud.Student
             {
                 throw new UserFriendlyException("Student not created ");
             }
+
+            
+
         }
         public async Task<StudentDto> UpdateAsync(UpdateStudentDto input)
         {
@@ -123,7 +137,7 @@ namespace UserCrud.Student
             {
                 var student = await _studentRepository.GetAsync(input.Id);
 
-                await ValidateLocationAsync(input.CountryId, input.StateId, input.CityId);
+              
 
                 ObjectMapper.Map(input, student);
                 await _studentRepository.UpdateAsync(student);
@@ -151,21 +165,26 @@ namespace UserCrud.Student
          
 
        
-        private async Task ValidateLocationAsync(int countryId, int stateId, int cityId)
+        private async Task ValidateLocationAsync(int countryId, int stateId, int cityId , int CollageId)
         {    
             if (await _countryRepository.FirstOrDefaultAsync(countryId) == null)
                 throw new UserFriendlyException("Invalid Country");
 
             var state = await _stateRepository.FirstOrDefaultAsync(stateId);
-            if (state == null || state.CountryId != countryId)
+            if (state == null || state.CountryId != countryId)   
                 throw new UserFriendlyException("Invalid State");
 
-            var city = await _cityRepository.FirstOrDefaultAsync(cityId);
-            if (city == null || city.StateId != stateId)
+            var city = await _cityRepository.FirstOrDefaultAsync(cityId);  
+            if (city == null || city.StateId != stateId)  
                 throw new UserFriendlyException("Invalid City");
 
+            var collage = await _collegeRepository.FirstOrDefaultAsync(CollageId);
+            if (collage == null || collage.CityId != cityId)  
+                throw new UserFriendlyException("Invalid Collage");
 
-            
+
+
+
         }
 
         

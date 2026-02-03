@@ -1,14 +1,18 @@
-namespace UserCrud.Authorization.Roles;
-
-public static class StaticRoleNames
+namespace UserCrud.Authorization.Roles
 {
-    public static class Host
+    public static class StaticRoleNames
     {
-        public const string Admin = "Admin";
-    }
+        public static class Host
+        {
+            public const string Admin = "Admin";
+        }
 
-    public static class Tenants
-    {
-        public const string Admin = "Admin";
+        public static class Tenants
+        {
+            public const string Admin = "Admin";
+
+            //public const string Doctor = "Doctor";
+            //public const string Patient = "Patient";
+        }
     }
 }

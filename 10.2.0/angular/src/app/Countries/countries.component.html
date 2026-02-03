@@ -1,30 +1,70 @@
+<div [@routerTransition]>
+  <!-- Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-6">
+          <h1>{{ 'Countries' | localize }}</h1>
+        </div>
 
-<div class="card">
-  <div class="card-header">
-    <button class="btn btn-primary" (click)="create()">
-      + Create Country
-    </button>
-  </div>
+        <div class="col-6 text-right">
+          <button class="btn btn-primary" (click)="create()">
+            <i class="fa fa-plus mr-1"></i>
+            {{ 'CreateCountry' | localize }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="card-body">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Active</th>
-          <th width="150">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let c of countries">
-          <td>{{ c.name }}</td>
-          <td>{{ c.isActive }}</td>
-          <td>
-            <button class="btn btn-sm btn-info" (click)="edit(c)">Edit</button>
-            <button class="btn btn-sm btn-danger" (click)="delete(c)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- Content -->
+  <section class="content">
+    <div class="card">
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover table-bordered text-nowrap mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th>{{ 'CountryName' | localize }}</th>
+              <th>{{ 'Active' | localize }}</th>
+              <th class="text-center" style="width: 120px">
+                {{ 'Actions' | localize }}
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let c of countries">
+              <td><strong>{{ c.name }}</strong></td>
+              <td>
+                <span class="badge" [ngClass]="c.isActive ? 'badge-success' : 'badge-secondary'">
+                  {{ c.isActive ? 'Yes' : 'No' }}
+                </span>
+              </td>
+              <td class="text-center">
+                <button
+                  class="btn btn-sm btn-secondary mr-1"
+                  (click)="edit(c)"
+                  title="Edit">
+                  <i class="fa fa-edit"></i>
+                </button>
+
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="delete(c)"
+                  title="Delete">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="countries.length === 0">
+              <td colspan="3" class="text-center text-muted">
+                {{ 'NoData' | localize }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 </div>

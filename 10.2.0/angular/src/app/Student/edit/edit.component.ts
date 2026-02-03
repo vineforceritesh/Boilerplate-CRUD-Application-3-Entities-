@@ -42,10 +42,10 @@ export class EditStudentDialogComponent
   }
 
   ngOnInit(): void {
-    // this._studentService.getAll().subscribe(result => {
+    this._studentService.getAll().subscribe(result => {
      
-    //   this.cd.detectChanges();
-    // });
+      this.cd.detectChanges();
+    });
   }
   
 

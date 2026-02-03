@@ -15,7 +15,7 @@ import { LocalizePipe } from '@shared/pipes/localize.pipe';
 @Component({
   templateUrl: './countries.component.html',
   standalone: true,
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, LocalizePipe]
 })
 export class CountryComponent {
   countries: CountryDto[] = [];

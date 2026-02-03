@@ -24,5 +24,15 @@ public static class AppRoleConfig
                 MultiTenancySides.Tenant
             )
         );
+
+        // change here
+
+        //roleManagementConfig.StaticRoles.Add(
+        //    new StaticRoleDefinition(
+        //        StaticRoleNames.Hospital.Patient,
+        //        MultiTenancySides.Hospital
+
+        //        )
+        //    );
     }
 }

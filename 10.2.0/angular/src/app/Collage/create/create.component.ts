@@ -16,16 +16,21 @@ import { AbpValidationSummaryComponent } from '../../../shared/components/valida
 import { LocalizePipe } from '../../../shared/pipes/localize.pipe';
 
 import { AppComponentBase } from '../../../shared/app-component-base';
+
 import {
   CreateCollegeDto,
   CollegeDto,
-  CollageServiceProxy
+  CollageServiceProxy,
+  CityDto,
+  CityServiceProxy
 } from '../../../shared/service-proxies/service-proxies';
+import { CommonModule } from '@node_modules/@angular/common';
 
 @Component({
   templateUrl: 'create.component.html',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     AbpModalHeaderComponent,
     AbpModalFooterComponent,
@@ -41,11 +46,14 @@ export class CreateCollageDialogComponent
 
   collage: CollegeDto = new CollegeDto();
 
+  cities: CityDto[] = [];
+
   onSave = output<EventEmitter<any>>();
 
   constructor(
     injector: Injector,
     private _collageService: CollageServiceProxy,
+    private _cityService: CityServiceProxy,
     public bsModalRef: BsModalRef,
     private cd: ChangeDetectorRef
   ) {
@@ -53,8 +61,16 @@ export class CreateCollageDialogComponent
   }
 
   ngOnInit(): void {
-    // No data to load for create
+    this.loadCities();
   }
+
+ loadCities(): void {
+  this._cityService.getAllCities().subscribe((res: CityDto[]) => {
+    this.cities = res;  
+    this.cd.detectChanges();
+  });
+}
+
 
   save(): void {
     this.saving = true;
@@ -64,7 +80,7 @@ export class CreateCollageDialogComponent
 
     this._collageService.create(input).subscribe(
       () => {
-        this.notify.success(this.l('SavedSuccessfully'));
+        this.notify.success('Collage created successfully ✅', 'Success');
         this.bsModalRef.hide();
         this.onSave.emit(null);
       },

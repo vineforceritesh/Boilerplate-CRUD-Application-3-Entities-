@@ -38,30 +38,8 @@
       </div>
     </div>
 
-    <!-- Email -->
-    <div class="form-group row required">
-      <label class="col-md-3 col-form-label" for="address">
-        {{ 'address' | localize }}
-      </label>
-
-      <div class="col-md-9">
-        <input
-          type="text"
-          class="form-control"
-          name="address"
-          id="address"
-          required
-          [(ngModel)]="collage.address"
-          #emailModel="ngModel"
-          #emailEl />
-
-        <abp-validation-summary
-          [control]="emailModel"
-          [controlEl]="emailEl">
-        </abp-validation-summary>
-      </div>
-    </div>
-
+   
+   
     <!-- Position -->
     <div class="form-group row required">
       <label class="col-md-3 col-form-label" for="phoneNumber">
@@ -85,6 +63,21 @@
         </abp-validation-summary>
       </div>
     </div>
+
+      <div class="form-group">
+      <label>City</label>
+        <select
+         class="form-control"
+        [(ngModel)]="collage.cityId"
+          name="cityId"
+         required>
+         <option [ngValue]="null">-- Select City --</option>
+           <option *ngFor="let city of cities" [ngValue]="city.id">  
+             {{ city.name }}
+           </option>
+         </select>
+       </div>
+
 
   
 

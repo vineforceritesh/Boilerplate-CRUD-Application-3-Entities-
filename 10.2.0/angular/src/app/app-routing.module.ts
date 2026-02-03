@@ -16,6 +16,32 @@ import { AppComponent } from './app.component';
                         canActivate: [AppRouteGuard],
                     },
                     {
+                        path: 'PatientAdmission',
+                        loadChildren: () => import('./PatientAdmission/PatientAdmission.module').then((m) => m.PatientAdmissionModule),
+                        canActivate: [AppRouteGuard],
+                    },
+                    {
+                        path: 'Doctors',
+                        loadChildren: () => import('./Doctors/doctors.module').then((m) => m.DoctorsModule),
+                        canActivate: [AppRouteGuard],
+                    },
+                      {
+                        path: 'Patients',
+                        loadChildren: () => import('./Patients/Patients.module').then((m) => m.PatientsModule),
+                        canActivate: [AppRouteGuard],
+                    },
+                       {
+                        path: 'rooms',
+                        loadChildren: () => import('./rooms/rooms.module').then((m) => m.RoomsModule),
+                        canActivate: [AppRouteGuard],
+                    },
+                     {
+                        path: 'Bed',
+                        loadChildren: () => import('./Bed/bed.module').then((m) => m.BedModule),
+                        canActivate: [AppRouteGuard],
+                    },
+
+                    {
                         path: 'about',
                         loadChildren: () => import('./about/about.module').then((m) => m.AboutModule),
                         canActivate: [AppRouteGuard],

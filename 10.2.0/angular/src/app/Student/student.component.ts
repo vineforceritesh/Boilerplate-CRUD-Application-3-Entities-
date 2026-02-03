@@ -10,7 +10,7 @@ import { LazyLoadEvent, PrimeTemplate } from 'primeng/api';
 import { Paginator, PaginatorModule } from 'primeng/paginator';
 
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 
 import { appModuleAnimation } from '../../shared/animations/routerTransition';
 import { PagedListingComponentBase } from '../../shared/paged-listing-component-base';
@@ -24,20 +24,23 @@ import { StudentDto, StudentServiceProxy } from '../../shared/service-proxies/se
   animations: [appModuleAnimation()],
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     TableModule,
-    PrimeTemplate,
+    
     NgIf,
     PaginatorModule,
     LocalizePipe
   ],
 })
-export class StudentComponent extends PagedListingComponentBase<StudentDto> {
+export class StudentComponent{
+
 
   @ViewChild('dataTable', { static: true }) dataTable!: Table;
   @ViewChild('paginator', { static: true }) paginator!: Paginator;
 
   keyword = '';
+
 
   constructor(
     injector: Injector,
@@ -45,31 +48,23 @@ export class StudentComponent extends PagedListingComponentBase<StudentDto> {
     private _modalService: BsModalService,
     cd: ChangeDetectorRef
   ) {
-    super(injector, cd);
   }
 
+  students: StudentDto[] =[];
+
+
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
+    this._studentService.getAll().subscribe(result => {
+      this.students = result;
+    });
+  }
   
-  list(event?: LazyLoadEvent): void {
-
-    if (this.primengTableHelper.shouldResetPaging(event)) {
-      this.paginator.changePage(0);
-      if (this.primengTableHelper.records?.length) {
-        return;
-      }
-    }
-
-    this.primengTableHelper.showLoadingIndicator();
-
-    this._studentService
-      .getAll()   
-      .pipe(finalize(() => this.primengTableHelper.hideLoadingIndicator()))
-      .subscribe((result) => {
-
-        this.primengTableHelper.records = result;
-        this.primengTableHelper.totalRecordsCount = result.length; // simple paging
-        this.cd.detectChanges();
-      });
-  }
+ 
 
   
   createStudent(): void {
@@ -77,9 +72,8 @@ export class StudentComponent extends PagedListingComponentBase<StudentDto> {
       class: 'modal-lg',
     });
 
-    modalRef.content.onSave.subscribe(() => {
-      this.refresh();
-    });
+    modalRef.content.onSave.subscribe(() => this.loadData());
+
   }
 
 
@@ -91,24 +85,14 @@ export class StudentComponent extends PagedListingComponentBase<StudentDto> {
       },
     });
 
-    modalRef.content.onSave.subscribe(() => {
-      this.refresh();
-    });
+    modalRef.content.onSave.subscribe(() => this.loadData());
+
   }
 
   
-  delete(student: StudentDto): void {
-    abp.message.confirm(
-      this.l('StudentDeleteWarningMessage', student.name),
-      undefined,
-      (result: boolean) => {
-        if (result) {
-          this._studentService.delete(student.id).subscribe(() => {
-            abp.notify.success(this.l('SuccessfullyDeleted'));
-            this.refresh();
-          });
-        }
-      }
-    );
+  delete(collage: StudentDto): void {
+      this._studentService.delete(collage.id).subscribe(() => {
+        this.loadData();
+      });
+    }
   }
-}

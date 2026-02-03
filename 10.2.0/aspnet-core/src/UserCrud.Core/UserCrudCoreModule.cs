@@ -18,7 +18,10 @@ namespace UserCrud;
 public class UserCrudCoreModule : AbpModule
 {
     public override void PreInitialize()
+
     {
+
+        Configuration.Authorization.Providers.Add<UserCrud.Authorization.UserCrudAuthorizationProvider>();
         Configuration.Auditing.IsEnabledForAnonymousUsers = true;
 
         // Declare entity types
@@ -46,6 +49,8 @@ public class UserCrudCoreModule : AbpModule
     {
         IocManager.RegisterAssemblyByConvention(typeof(UserCrudCoreModule).GetAssembly());
     }
+
+   
 
     public override void PostInitialize()
     {

@@ -39,28 +39,7 @@
     </div>
 
     <!-- Email -->
-    <div class="form-group row required">
-      <label class="col-md-3 col-form-label" for="address">
-        {{ 'Address' | localize }}
-      </label>
-
-      <div class="col-md-9">
-        <input
-          type="text"
-          class="form-control"
-          name="address"
-          id="address"
-          required
-          [(ngModel)]="collage.address"
-          #emailModel="ngModel"
-          #emailEl />
-
-        <abp-validation-summary
-          [control]="emailModel"
-          [controlEl]="emailEl">
-        </abp-validation-summary>
-      </div>
-    </div>
+   
 
     <!-- Position -->
     <div class="form-group row required">
